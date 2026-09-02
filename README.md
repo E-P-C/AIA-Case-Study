@@ -35,7 +35,7 @@ copy .env.example .env   # or: cp .env.example .env
 # Downloads from official Hugging Face (https://huggingface.co), ~1.1GB
 python scripts/download_model.py
 python scripts/ingest_docs.py
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
 Health check:
@@ -53,6 +53,14 @@ curl -X POST http://127.0.0.1:8000/v1/ask ^
   -d "{\"question\": \"What is the default top_k?\", \"session_id\": \"demo-1\"}"
 ```
 
+Chat UI: open **http://127.0.0.1:8000/chat** — a lightweight browser chat box backed by
+`POST /v1/ask` (bubbles, citations, multi-turn in the same session, API token pre-filled).
+
+Developer console (`/docs`, Swagger UI): for developers who want to inspect each endpoint.
+Click **Authorize** in the top-right corner, enter the API token (`akp-demo-token`), then
+expand **POST /v1/ask**, click **Try it out**, fill in `question` (and an optional
+`session_id`) and execute. Reusing the same `session_id` keeps multi-turn continuity.
+
 CLI (no HTTP):
 
 ```bash
@@ -63,7 +71,7 @@ python scripts/cli_demo.py --question "病假连续超过几天需要医疗证�
 
 ```
 RAGagent/
-  app/                 # FastAPI + RAG pipeline
+  app/                 # FastAPI + RAG pipeline (+ app/static/chat.html UI)
   data/raw/            # Knowledge corpus (md/txt/pdf)
   data/index/          # Built vector index (generated)
   models/              # GGUF weights (downloaded)
@@ -116,6 +124,8 @@ excluded as a startup cost, not per-query latency.
 ```
 
 Response includes `answer`, `citations[]`, `retrieved_chunks[]`, token usage, `latency_ms`, and refusal metadata when applicable.
+
+`POST /v1/ask` requires the `X-API-Token` header (default `akp-demo-token`); `/docs` exposes it via the **Authorize** button. `GET /v1/health` is public.
 
 ## Notes on corpus
 

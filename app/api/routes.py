@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Security
+from fastapi.security import APIKeyHeader
 
 from app.api.schemas import AskRequest, AskResponse, Citation, HealthResponse
 from app.config import Settings, get_settings
@@ -12,8 +13,13 @@ from app.rag.retriever import VectorIndex
 router = APIRouter()
 
 
+# Security scheme so /docs shows an Authorize button. auto_error=False keeps the
+# existing explicit 401 (we own the error message) instead of FastAPI's auto-401.
+api_key_header = APIKeyHeader(name="X-API-Token", auto_error=False)
+
+
 def require_token(
-    x_api_token: str | None = Header(default=None),
+    x_api_token: str | None = Security(api_key_header),
     settings: Settings = Depends(get_settings),
 ) -> None:
     if x_api_token != settings.api_token:

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKP 知识库问答</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --border: #e3e8ef;
+    --text: #1f2733;
+    --muted: #7a8699;
+    --accent: #2f6fed;
+    --accent-soft: #e8effc;
+    --user-bubble: #2f6fed;
+    --user-text: #ffffff;
+    --bot-bubble: #ffffff;
+    --err: #d9534f;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .brand { font-size: 17px; font-weight: 600; }
+  .brand small { color: var(--muted); font-weight: 400; margin-left: 8px; }
+  .btn {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .settings {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .settings input {
+    flex: 0 1 220px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 13px;
+  }
+  .chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .bubble {
+    max-width: 78%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    line-height: 1.6;
+    font-size: 14px;
+    white-space: normal;
+    word-break: break-word;
+  }
+  .bubble.user {
+    align-self: flex-end;
+    background: var(--user-bubble);
+    color: var(--user-text);
+    border-bottom-right-radius: 4px;
+  }
+  .bubble.bot {
+    align-self: flex-start;
+    background: var(--bot-bubble);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+  }
+  .bubble .answer { white-space: normal; }
+  .cites {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 10px;
+    padding: 2px 8px;
+  }
+  .err { color: var(--err); }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .hello { color: var(--muted); }
+  .think {
+    align-self: flex-start;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 6px 2px;
+  }
+  .think::after { content: "…"; animation: dots 1.2s steps(4,end) infinite; }
+  @keyframes dots { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; } }
+  .composer {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    align-items: flex-end;
+  }
+  .composer textarea {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    max-height: 120px;
+    outline: none;
+  }
+  .composer textarea:focus { border-color: var(--accent); }
+  .send {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .send:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">AKP 知识库问答<small>内部 RAG QA · 中文 / English</small></div>
+    <button class="btn" id="newChatBtn">新对话</button>
+  </header>
+  <div class="settings">
+    <span>API Token</span>
+    <input id="tokenInput" type="password" value="akp-demo-token" autocomplete="off" spellcheck="false">
+    <span>请与 <code>.env</code> 中的 <code>API_TOKEN</code> 保持一致</span>
+  </div>
+  <main class="chat" id="chat"></main>
+  <div class="composer">
+    <textarea id="questionInput" rows="1" placeholder="输入问题，Enter 发送，Shift+Enter 换行…"></textarea>
+    <button class="send" id="sendBtn">发送</button>
+  </div>
+
+<script>
+(function () {
+  const chatEl = document.getElementById('chat');
+  const inputEl = document.getElementById('questionInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const tokenInput = document.getElementById('tokenInput');
+  const newChatBtn = document.getElementById('newChatBtn');
+
+  let sessionId = crypto.randomUUID();
+  let busy = false;
+
+  // Remember the token across refreshes (demo default is fine to prefill).
+  tokenInput.value = localStorage.getItem('akp_token') || 'akp-demo-token';
+  tokenInput.addEventListener('change', function () {
+    localStorage.setItem('akp_token', tokenInput.value);
+  });
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function scrollBottom() {
+    chatEl.scrollTop = chatEl.scrollHeight;
+  }
+
+  function addBubble(role, html) {
+    const div = document.createElement('div');
+    div.className = 'bubble ' + role;
+    div.innerHTML = html;
+    chatEl.appendChild(div);
+    scrollBottom();
+    return div;
+  }
+
+  function addThinking() {
+    const div = document.createElement('div');
+    div.className = 'think';
+    div.textContent = '思考中';
+    chatEl.appendChild(div);
+    scrollBottom();
+    return div;
+  }
+
+  function removeThinking(node) {
+    if (node && node.parentNode) node.parentNode.removeChild(node);
+  }
+
+  function renderAnswer(text) {
+    // Citations are listed separately below; strip inline [source:…] / (source:…) markers.
+    const clean = String(text || '').replace(/[\[\(]source:[^\])]*[\])]/gi, '').trim();
+    return '<div class="answer">' + escapeHtml(clean).replace(/\n/g, '<br>') + '</div>';
+  }
+
+  function renderCitations(citations) {
+    if (!citations || !citations.length) return '';
+    const chips = citations.map(function (c) {
+      const sim = (c.similarity != null) ? ' · ' + Number(c.similarity).toFixed(2) : '';
+      return '<span class="chip">' + escapeHtml(c.source) + ' · p' + c.page + sim + '</span>';
+    }).join('');
+    return '<div class="cites">来源：' + chips + '</div>';
+  }
+
+  async function send() {
+    const question = inputEl.value.trim();
+    if (!question || busy) return;
+    busy = true;
+    sendBtn.disabled = true;
+
+    addBubble('user', escapeHtml(question));
+    inputEl.value = '';
+    inputEl.style.height = 'auto';
+    const thinking = addThinking();
+
+    try {
+      const resp = await fetch('/v1/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Token': tokenInput.value
+        },
+        body: JSON.stringify({
+          question: question,
+          session_id: sessionId,
+          top_k: 4,
+          reranker_enabled: true,
+          temperature: 0.2
+        })
+      });
+      const data = await resp.json().catch(function () { return {}; });
+      removeThinking(thinking);
+
+      if (!resp.ok) {
+        let msg = '请求失败（HTTP ' + resp.status + '）';
+        if (resp.status === 401) {
+          msg = 'Token 无效或缺失，请检查页面顶部的 API Token';
+        } else if (data && data.detail) {
+          msg = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail);
+        }
+        addBubble('bot', '<div class="err">' + escapeHtml(msg) + '</div>');
+      } else {
+        let html = renderAnswer(data.answer) + renderCitations(data.citations);
+        if (data.refused) {
+          html += '<div class="tag">已拒答：' + escapeHtml(data.refusal_reason || '拒绝回答') + '</div>';
+        }
+        addBubble('bot', html);
+      }
+    } catch (e) {
+      removeThinking(thinking);
+      addBubble('bot', '<div class="err">网络错误：无法连接服务，请确认服务已启动</div>');
+    } finally {
+      busy = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
+    }
+  }
+
+  function newChat() {
+    sessionId = crypto.randomUUID();
+    chatEl.innerHTML = '';
+    addBubble('bot', '<div class="hello">你好，我是 AKP 知识库问答助手。可以问我员工手册、合规、技术规格或架构相关的问题。</div>');
+    inputEl.focus();
+  }
+
+  sendBtn.addEventListener('click', send);
+  inputEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
+  });
+  inputEl.addEventListener('input', function () {
+    inputEl.style.height = 'auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+  });
+  newChatBtn.addEventListener('click', newChat);
+
+  newChat();
+})();
+</script>
+</body>
+</html>
