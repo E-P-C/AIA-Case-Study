@@ -27,17 +27,12 @@ def main() -> None:
     parser.add_argument(
         "--endpoint",
         default=os.environ.get("HF_ENDPOINT", DEFAULT_ENDPOINT),
-        help="Hugging Face Hub endpoint (default: https://huggingface.co)",
+        help="Hugging Face Hub endpoint. Defaults to the official "
+        "https://huggingface.co; set HF_ENDPOINT (e.g. to a mirror) to override.",
     )
     args = parser.parse_args()
 
     os.environ["HF_ENDPOINT"] = args.endpoint
-    # Avoid accidental mirror routing from a parent shell.
-    if "hf-mirror" in args.endpoint:
-        raise SystemExit(
-            "Refusing mirror endpoint. Use --endpoint https://huggingface.co "
-            "or unset HF_ENDPOINT."
-        )
 
     print(f"Using HF endpoint: {args.endpoint}")
     args.outdir.mkdir(parents=True, exist_ok=True)
@@ -47,18 +42,14 @@ def main() -> None:
         filename=args.filename,
         local_dir=str(args.outdir),
     )
-    target = args.outdir / args.filename
-    downloaded = Path(path)
-    if downloaded.resolve() != target.resolve() and not target.exists():
-        target.write_bytes(downloaded.read_bytes())
-        path = target
-    elif target.exists():
-        path = target
 
-    print(f"Model ready at: {path}")
-    print(f"Size bytes: {Path(path).stat().st_size}")
+    target = Path(path)
+    if not target.is_file():
+        raise FileNotFoundError(f"Model file not found at {target}")
+
+    print(f"Model ready at: {target}")
+    print(f"Size bytes: {target.stat().st_size}")
     print("Set MODEL_PATH in .env if you used a different filename.")
-
 
 if __name__ == "__main__":
     main()

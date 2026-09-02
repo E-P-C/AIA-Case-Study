@@ -10,7 +10,7 @@ orjson>=3.10.0
 # On Windows, prefer CPU wheels if pip falls back to an sdist build:
 #   pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 llama-cpp-python>=0.3.0
-huggingface-hub>=0.26.0
+huggingface-hub>=0.34
 
 # Retrieval / embeddings
 sentence-transformers>=3.3.0
