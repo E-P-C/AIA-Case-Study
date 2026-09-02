@@ -1,0 +1,26 @@
+# Core API
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.9.0
+pydantic-settings>=2.6.0
+python-dotenv>=1.0.1
+orjson>=3.10.0
+
+# Embedded local LLM (no external inference server)
+# On Windows, prefer CPU wheels if pip falls back to an sdist build:
+#   pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+llama-cpp-python>=0.3.0
+huggingface-hub>=0.26.0
+
+# Retrieval / embeddings
+sentence-transformers>=3.3.0
+numpy>=1.26.0
+scikit-learn>=1.5.0
+rank-bm25>=0.2.2
+
+# Document loaders
+pypdf>=5.0.0
+cryptography>=3.1
+
+# Evaluation helpers
+httpx>=0.27.0

@@ -1,0 +1,52 @@
+[OCR EXTRACTED FROM SCANNED PDF — AKP System Architecture Doc Rev‑B]
+PAGE 1 | AKP CONFIDENTIAL｜Printed:2024‑11‑02
+  AKP RAG QA Syste,m High‑level Architcture
+
+1. Document Indexing Pipeline
+Raw documments → file dispatcher & loader component
+‑ native pdf / docx: direct text extrct from binary files
+‑ scanned pdf: invoke OCR moudle, clean noise artifacts such as header/footer fragments, OCR mis‑spellings
+text segmentation & semantic chunking → embedding inference → vector database persist storage.
+
+Indexing pipeline extra sub‑steps:
+‑ Document format classification: classify each incoming file into native‑pdf / scanned‑pdf / docx / plain text.
+‑ Metadata injection: attach source filename, file_type identifier, page numbers to each output chunk record.
+‑ Duplicate detection: skip ingesting duplicate document content to avoid polluting vector index.
+
+2. Runtime Query‑time Pipeline
+User HTTPS API request → authentication middleware → user‑input pre‑processing & sanitization
+→ vector‑db semantic retrieval (top‑k candidate chunks)
+→ [optional reranker scoring module for re‑ordering candidates]
+→ prompt construction: assemble grounded prompt concatenating retrieved source snippets + citation metadata + multi‑turn history context
+→ LLM generation service call
+→ final response assembly: generated answer + citation list + usage metrics
+→ return JSON payload to API caller
+
+[Page footer] AKP Internal Only Page 1 of 4 Do Not Distribute
+
+PAGE 2 | AKP CONFIDENTIAL｜Printed:2024‑11‑02
+3. Observability & Logging Sub‑system
+All request traffic routed to centralized log‑collector service.
+Mandatory logged fields: session_id, user_query, retrieved_chunk_list(source file+page+similarity),
+output_answer, token_in, token_out, latency_ms, timestamp, active runtime parameters.
+Pre‑log processing step: automatic PII redaction before log records persist into log storage database.
+Separate security audit log stream keeps records for prompt‑injection events and PII detection hits.
+
+4. Quality Metric Non‑Functional Boundary
+Faithfulness metric target >=0.85; Context Precision >=0.70.
+Self‑built evaluation dataset required for system validation. Overall end‑to‑end answer accuracy target >= 80%.
+Evaluation workflow shall support periodic batch job run to measure quality after component or corpus changes.
+
+5. Evolvability Design Principles
+‑ Component loose coupling: embedding, reranker, chunking strategy, LLM provider can be swapped via configuration without core code rewrite.
+‑ Horizontal scaling: indexing workload and query‑time workload can scale independently.
+‑ Extensible metrics framework: new quality metrics can be added without modifying core request handling logic.
+
+PAGE 3 | AKP CONFIDENTIAL｜Printed:2024‑11‑02
+6. Security Boundaries
+‑ Prompt injection detection runs during user‑input pre‑processing stage. Detected malicious inputs are blocked and logged to security audit log.
+‑ Access control: RAG API enforces simple token‑based authentication; different user roles may have access restriction over subsets of knowledge corpus.
+‑ Output guardrail: post‑generation check prevents answer output when no valid supporting context exists.
+
+[OCR noise note]:
+"Syste,m", "Architcture", "documments", "extrct", "moudle" are OCR mis‑recognition artifacts kept intentionally for case‑study testing of pre‑processing logic.
