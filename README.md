@@ -32,40 +32,15 @@ pip install -r requirements.txt
 #   pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 copy .env.example .env   # or: cp .env.example .env
 
-# Downloads from official Hugging Face (https://huggingface.co), ~1.1GB
+# Downloads from Hugging Face mirror (or https://huggingface.co), ~1.1GB
+$env:HF_ENDPOINT = "https://hf-mirror.com" # Ignore this line ONLY IF you can reach HF official site
 python scripts/download_model.py
 python scripts/ingest_docs.py
 uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Health check:
-
-```bash
-curl http://127.0.0.1:8000/v1/health
-```
-
-Ask (API token from `.env`, default `akp-demo-token`):
-
-```bash
-curl -X POST http://127.0.0.1:8000/v1/ask ^
-  -H "Content-Type: application/json" ^
-  -H "X-API-Token: akp-demo-token" ^
-  -d "{\"question\": \"What is the default top_k?\", \"session_id\": \"demo-1\"}"
-```
-
-Chat UI: open **http://127.0.0.1:8000/chat** — a lightweight browser chat box backed by
-`POST /v1/ask` (bubbles, citations, multi-turn in the same session, API token pre-filled).
-
-Developer console (`/docs`, Swagger UI): for developers who want to inspect each endpoint.
-Click **Authorize** in the top-right corner, enter the API token (`akp-demo-token`), then
-expand **POST /v1/ask**, click **Try it out**, fill in `question` (and an optional
-`session_id`) and execute. Reusing the same `session_id` keeps multi-turn continuity.
-
-CLI (no HTTP):
-
-```bash
-python scripts/cli_demo.py --question "病假连续超过几天需要医疗证明？"
-```
+## Chat UI
+Open **http://127.0.0.1:8000/chat** — a lightweight browser chat box backed by `POST /v1/ask` (bubbles, citations, multi-turn in the same session, API token pre-filled).
 
 ## Project layout
 
@@ -132,3 +107,31 @@ Response includes `answer`, `citations[]`, `retrieved_chunks[]`, token usage, `l
 - `architecture_doc_scanned.txt` simulates OCR output (intentional misspellings cleaned during ingest).
 - Native PDFs under `data/raw/` are text-extracted with `pypdf`.
 - Indexing supports **incremental** adds without full rebuild when new files appear.
+
+## Developer functions
+Health check:
+
+```bash
+curl http://127.0.0.1:8000/v1/health
+```
+
+Ask (API token from `.env`, default `akp-demo-token`):
+
+```bash
+curl -X POST http://127.0.0.1:8000/v1/ask ^
+  -H "Content-Type: application/json" ^
+  -H "X-API-Token: akp-demo-token" ^
+  -d "{\"question\": \"What is the default top_k?\", \"session_id\": \"demo-1\"}"
+```
+
+
+Developer console (`/docs`, Swagger UI): for developers who want to inspect each endpoint.
+Click **Authorize** in the top-right corner, enter the API token (`akp-demo-token`), then
+expand **POST /v1/ask**, click **Try it out**, fill in `question` (and an optional
+`session_id`) and execute. Reusing the same `session_id` keeps multi-turn continuity.
+
+CLI (no HTTP):
+
+```bash
+python scripts/cli_demo.py --question "病假连续超过几天需要医疗证明？"
+```
