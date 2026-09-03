@@ -1,6 +1,6 @@
 # AKP Internal RAG QA Service
 
-Junior Backend case-study demo: bilingual (CN/EN) retrieval-augmented QA over the AKP internal knowledge corpus, with citations, multi-turn sessions, PII / prompt-injection guards, and structured logging.
+Junior Backend case-study demo: locally run bilingual (CN/EN) retrieval-augmented QA over the AKP internal knowledge corpus, with citations, multi-turn sessions, PII / prompt-injection guards, and structured logging.
 
 ## Design choice: embedded `llama-cpp-python`
 
