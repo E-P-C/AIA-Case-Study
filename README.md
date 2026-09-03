@@ -18,7 +18,7 @@ Default model: `Qwen2.5-1.5B-Instruct` Q4_K_M (~1GB) — bilingual, fits beside 
 ## Quick start
 
 ```bash
-# from RAGagent/
+# from (project folder)/
 python -m venv .venv
 
 # Windows PowerShell
