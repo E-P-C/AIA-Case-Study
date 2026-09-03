@@ -1,11 +1,11 @@
 {
   "summary": {
-    "faithfulness": 0.9778,
+    "faithfulness": 0.9021,
     "context_precision": 0.8194,
-    "answer_accuracy": 0.9187,
+    "answer_accuracy": 0.9087,
     "n": 20,
     "context_precision_n": 18,
-    "latency_p90_ms": 4897,
+    "latency_p90_ms": 5718,
     "refusal_rate": 0.05,
     "targets": {
       "faithfulness": 0.85,
@@ -24,7 +24,7 @@
     {
       "id": "eh_leave_01",
       "question": "How many paid annual leave days does an employee with 3 years of service get?",
-      "answer": "An employee with 3 years of service gets **15 days** paid annual leave. [source:employee_handbook_v2.1.md,p4]",
+      "answer": "An employee with 3 years of service gets **15 days** paid annual leave. [source:employee_handbook_v2.1.md,p4|type:plain-text|score:0.712]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
@@ -32,9 +32,9 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 9745,
-      "token_in": 466,
-      "token_out": 32,
+      "latency_ms": 13803,
+      "token_in": 467,
+      "token_out": 45,
       "citations": [
         {
           "source": "employee_handbook_v2.1.md",
@@ -61,8 +61,8 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 2562,
-      "token_in": 415,
+      "latency_ms": 2729,
+      "token_in": 416,
       "token_out": 42,
       "citations": [
         {
@@ -82,7 +82,7 @@
     {
       "id": "eh_remote_01",
       "question": "What is the maximum number of remote working days per week?",
-      "answer": "The maximum number of remote working days per week is 2. [source:employee_handbook_v2.1.md,p6]",
+      "answer": "The maximum number of remote working days per week is 2. [source:employee_handbook_v2.1.md,p6|type:plain-text|score:0.810]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
@@ -90,9 +90,9 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 1657,
-      "token_in": 310,
-      "token_out": 27,
+      "latency_ms": 2293,
+      "token_in": 311,
+      "token_out": 40,
       "citations": [
         {
           "source": "employee_handbook_v2.1.md",
@@ -105,17 +105,17 @@
     {
       "id": "eh_core_hours",
       "question": "What are the core working hours when staff must be reachable?",
-      "answer": "According to the retrieved context, core working hours are 10:00-16:00. Staff must be reachable during these times as specified in section **2** of \"Working Hours & Leave Policy\" [source:employee_handbook_v2.1.md,p3|type:plain-text|score:0.762].",
+      "answer": "The core working hours when staff must be reachable are 10:00-16:00. [source]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
       "has_gold": true,
-      "faithfulness": 1.0,
+      "faithfulness": 0.5,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 3497,
-      "token_in": 303,
-      "token_out": 72,
+      "latency_ms": 1720,
+      "token_in": 304,
+      "token_out": 26,
       "citations": [
         {
           "source": "employee_handbook_v2.1.md",
@@ -128,7 +128,7 @@
     {
       "id": "eh_usb",
       "question": "Are USB external storage devices allowed on corporate laptops by default?",
-      "answer": "Yes, USB external storage devices are blocked by default on corporate laptops to prevent data exfiltration. [source:employee_handbook_v2.1.md,p5]",
+      "answer": "Yes, USB external storage devices are generally blocked by default on corporate laptops to prevent data exfiltration. [source:employee_handbook_v2.1.md,p5]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
@@ -136,9 +136,9 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 1999,
-      "token_in": 277,
-      "token_out": 34,
+      "latency_ms": 1974,
+      "token_in": 278,
+      "token_out": 35,
       "citations": [
         {
           "source": "employee_handbook_v2.1.md",
@@ -150,7 +150,7 @@
     },
     {
       "id": "comp_pii_01",
-      "question": "If a user query contains PII, what should the RAG QA service do?",
+      "question": "If a user query contains PII, what should the RAG QA service answer?",
       "answer": "If a user query contains PII, the RAG QA service should reject processing that request. [source:compliance_guide_ai_internal_v1.4.md,p3]",
       "refused": false,
       "effectively_refused": false,
@@ -159,15 +159,15 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 2211,
-      "token_in": 326,
+      "latency_ms": 2160,
+      "token_in": 327,
       "token_out": 35,
       "citations": [
         {
           "source": "compliance_guide_ai_internal_v1.4.md",
           "page": 3,
           "file_type": "plain-text",
-          "similarity": 0.8096
+          "similarity": 0.8129
         }
       ]
     },
@@ -182,8 +182,8 @@
       "faithfulness": 1.0,
       "context_precision": 0.5,
       "answer_accuracy": 0.875,
-      "latency_ms": 2638,
-      "token_in": 435,
+      "latency_ms": 2726,
+      "token_in": 436,
       "token_out": 37,
       "citations": [
         {
@@ -211,8 +211,8 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 2001,
-      "token_in": 250,
+      "latency_ms": 2020,
+      "token_in": 251,
       "token_out": 39,
       "citations": [
         {
@@ -234,8 +234,8 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 2256,
-      "token_in": 316,
+      "latency_ms": 2368,
+      "token_in": 317,
       "token_out": 40,
       "citations": [
         {
@@ -249,7 +249,7 @@
     {
       "id": "tech_latency",
       "question": "What is the end-to-end latency SLO for the RAG-QA service?",
-      "answer": "The end-to-end latency SLO for the RAG-QA service is 90% of user queries completing within 10 seconds. [source:backend_technical_specs_v3.0.md,p2|type:plain-text|score:0.727]",
+      "answer": "The end-to-end latency SLO (Service Level Objective) for the RAG-QA service is 90% of user queries completing within 10 seconds. [source:backend_technical_specs_v3.0.md,p2|type:plain-text|score:0.727]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
@@ -257,9 +257,9 @@
       "faithfulness": 1.0,
       "context_precision": 0.5,
       "answer_accuracy": 0.8571,
-      "latency_ms": 3610,
-      "token_in": 453,
-      "token_out": 58,
+      "latency_ms": 3764,
+      "token_in": 454,
+      "token_out": 63,
       "citations": [
         {
           "source": "backend_technical_specs_v3.0.md",
@@ -286,8 +286,8 @@
       "faithfulness": 1.0,
       "context_precision": 0.5,
       "answer_accuracy": 1.0,
-      "latency_ms": 2747,
-      "token_in": 421,
+      "latency_ms": 2668,
+      "token_in": 422,
       "token_out": 41,
       "citations": [
         {
@@ -307,17 +307,17 @@
     {
       "id": "tech_threshold",
       "question": "相似度低于多少阈值时系统应拒绝回答？",
-      "answer": "根据检索到的上下文，相似度低于0.45阈值时系统应拒绝回答。[source:backend_technical_specs_v3.0.md,p2|type:plain-text]",
+      "answer": "根据检索到的上下文，知识库Agent回答必须严格基于提供的信息。系统拒绝编造事实、推断文档不存在的事实或结论，并明确告知如果相似度低于阈值，则应拒绝回答。\n\n答案：当检索结果的相关性小于0.45时，该系统将拒绝提供答复。\n[source:backend_technical_specs_v3.0.md,p2|type:plain-text|score:0.674]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
       "has_gold": true,
-      "faithfulness": 1.0,
+      "faithfulness": 0.5,
       "context_precision": 0.5,
       "answer_accuracy": 1.0,
-      "latency_ms": 2883,
-      "token_in": 401,
-      "token_out": 43,
+      "latency_ms": 4902,
+      "token_in": 402,
+      "token_out": 94,
       "citations": [
         {
           "source": "compliance_guide_ai_internal_v1.4.md",
@@ -336,7 +336,7 @@
     {
       "id": "tech_log_fields",
       "question": "Name three mandatory logging fields for each user request.",
-      "answer": "1. session_id\n2. timestamp  \n3. raw user query string",
+      "answer": "Based on the retrieved context, three mandatory logging fields for each user request are:\n\n1. session_id\n2. timestamp \n3. raw_user_query_string",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
@@ -344,9 +344,9 @@
       "faithfulness": 1.0,
       "context_precision": 0.5,
       "answer_accuracy": 0.1667,
-      "latency_ms": 2019,
-      "token_in": 469,
-      "token_out": 15,
+      "latency_ms": 2480,
+      "token_in": 470,
+      "token_out": 31,
       "citations": [
         {
           "source": "architecture_doc_scanned.txt",
@@ -365,17 +365,17 @@
     {
       "id": "arch_pipeline",
       "question": "What are the main stages of the runtime query-time pipeline?",
-      "answer": "The runtime query-time pipeline consists of the following stages:\n\n1. User HTTPS API request → authentication middleware\n2. user-input pre-processing & sanitization \n3. vector-db semantic retrieval (top-k candidate chunks)\n4. [optional reranker scoring module for reordering candidates]\n5. prompt construction: assemble grounded prompt concatenating retrieved source snippets + citation metadata + multi-turn history context  \n6. LLM generation service call\n7. final response\n\nThese stages are described in the provided contexts, with specific references to each step and its associated document or section [source:architecture_doc_scanned.txt,p1|type:scanned-pdf|score:0.632], Standard Handbook_EN.pdf[p26|type:native-pdf|score:0.546] on page 26 of the \"Room & Board\" chapter, Guide to Employee Benefits.pdf[page number not provided but likely referring to p14 native PDF document score is also mentioned as 0.513], and Standard Handbook_EN.pdf[p14|type:native-pdf|score:0.512] on page 14 of the \"Medical Practitioner's office\" chapter, which outlines key concepts related to healthcare benefits coverage [source].",
+      "answer": "The runtime query-time pipeline consists of several steps, including:\n\n1. User HTTPS API request → authentication middleware\n2. user-input pre-processing & sanitization \n3. vector-db semantic retrieval (top-k candidate chunks)\n4. optional reranker scoring module for reordering candidates  \n5. prompt construction: assemble grounded prompt concatenating retrieved source snippets + citation metadata + multi-turn history context\n\n6. LLM generation service call\n7. final refinement of the response [source:architecture_doc_scanned.txt,p1|type:scanned-pdf|score:0.632]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
       "has_gold": true,
-      "faithfulness": 0.8889,
+      "faithfulness": 0.875,
       "context_precision": 0.25,
       "answer_accuracy": 0.875,
-      "latency_ms": 12708,
-      "token_in": 648,
-      "token_out": 254,
+      "latency_ms": 6950,
+      "token_in": 649,
+      "token_out": 118,
       "citations": [
         {
           "source": "architecture_doc_scanned.txt",
@@ -414,8 +414,8 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 2604,
-      "token_in": 276,
+      "latency_ms": 2580,
+      "token_in": 277,
       "token_out": 50,
       "citations": [
         {
@@ -429,17 +429,17 @@
     {
       "id": "arch_ocr",
       "question": "How should scanned PDFs be handled in the indexing pipeline?",
-      "answer": "In the indexing pipeline, scanned PDFs should be handled by invoking an OCR module to clean noise artifacts such as header/footer fragments and correcting OCR mis-spellings. Then text segmentation is performed followed by semantic chunking for embedding inference into a vector database persist storage [source:architecture_doc_scanned.txt,p1|type:scanned-pdf|score:0.636].",
+      "answer": "When handling scanned PDFs in the indexing pipeline, they should be processed through OCR (Optical Character Recognition) to clean noise artifacts such as header/footer fragments and correct any OCR mis-spellings. The extracted text is then segmented into semantic chunks using embedding inference techniques before being stored persistently within a vector database [source:architecture_doc_scanned.txt,p1|type:scanned-pdf].",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
       "has_gold": true,
-      "faithfulness": 1.0,
+      "faithfulness": 0.5,
       "context_precision": 1.0,
-      "answer_accuracy": 0.8,
-      "latency_ms": 4053,
-      "token_in": 378,
-      "token_out": 77,
+      "answer_accuracy": 0.6,
+      "latency_ms": 4147,
+      "token_in": 379,
+      "token_out": 79,
       "citations": [
         {
           "source": "architecture_doc_scanned.txt",
@@ -466,8 +466,8 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 0.8,
-      "latency_ms": 4124,
-      "token_in": 461,
+      "latency_ms": 4114,
+      "token_in": 462,
       "token_out": 70,
       "citations": [
         {
@@ -487,7 +487,7 @@
     {
       "id": "eh_ip",
       "question": "Who owns work products created by employees within job scope?",
-      "answer": "All work products, source code and design documents created by employees within their job scope belong to AKP Corporation. Employees are not allowed to publish internal work output on personal blogs or external platforms without formal written approval.\n\nThe answer is based directly from the retrieved context: \"source:employee_handbook_v2.1.md,p7|type:plain-text|score:0.838\"",
+      "answer": "All work products, source code and design documents created by employees within their job scope belong to AKP Corporation. Employees are not allowed to publish internal work output on personal blogs or GitHub without formal written approval from the company.\n\nReference: [source:employee_handbook_v2.1.md,p7|type:plain-text|score:0.838]",
       "refused": false,
       "effectively_refused": false,
       "refusal_reason": null,
@@ -495,9 +495,9 @@
       "faithfulness": 0.6667,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 3720,
-      "token_in": 276,
-      "token_out": 79,
+      "latency_ms": 3663,
+      "token_in": 277,
+      "token_out": 73,
       "citations": [
         {
           "source": "employee_handbook_v2.1.md",
@@ -510,7 +510,7 @@
     {
       "id": "ood_01",
       "question": "What is the cafeteria lunch menu for next Friday?",
-      "answer": "I cannot find the cafeteria lunch menu for next Friday in this context. The provided information does not include details about food options or menus, only working hours and leave policies related to AKP Corp's benefits policy [source:employee_handbook_v2.1.md,p3|type:plain-text|score:0.571].",
+      "answer": "I cannot find the specific cafeteria lunch menu for next Friday in this context. The provided information only covers working hours, leave policy details and some medical terms related to health checkups but does not mention any food or meal options available at AKP Corp's facilities on a particular day like Fridays [source:employee_handbook_v2.1.md,p3|type:plain-text|score:0.571].",
       "refused": false,
       "effectively_refused": true,
       "refusal_reason": null,
@@ -518,9 +518,9 @@
       "faithfulness": 1.0,
       "context_precision": 1.0,
       "answer_accuracy": 1.0,
-      "latency_ms": 4897,
-      "token_in": 666,
-      "token_out": 68,
+      "latency_ms": 5718,
+      "token_in": 667,
+      "token_out": 84,
       "citations": [
         {
           "source": "employee_handbook_v2.1.md",

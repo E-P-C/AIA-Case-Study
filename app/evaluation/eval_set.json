@@ -36,7 +36,7 @@
   },
   {
     "id": "comp_pii_01",
-    "question": "If a user query contains PII, what should the RAG QA service do?",
+    "question": "If a user query contains PII, what should the RAG QA service answer?",
     "expected_answer": "reject processing that request",
     "relevant_sources": ["compliance_guide_ai_internal_v1.4.md"],
     "language": "en"
